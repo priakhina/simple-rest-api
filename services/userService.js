@@ -4,7 +4,11 @@ const getAllUsers = async () => {
   const snapshot = await db.ref('users').once('value');
   const users = snapshot.val();
 
-  return Object.values(users); // coverts the resulting object into an array of objects (i.e., array of users)
+  // Firebase returns null or undefined when there is no data; return an empty array instead
+  if (!users) return [];
+
+  // Convert the resulting object into an array of objects (i.e., array of users)
+  return Object.values(users);
 };
 
 const createUser = async (userData) => {
