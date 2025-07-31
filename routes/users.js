@@ -1,6 +1,15 @@
 const usersRouter = require('express').Router();
 const { userSchema } = require('../validators/userValidator');
-const { createUser } = require('../services/userService');
+const { createUser, getAllUsers } = require('../services/userService');
+
+usersRouter.get('/', async (req, res, next) => {
+  try {
+    const users = await getAllUsers();
+    return res.status(200).send(users);
+  } catch (error) {
+    return next(error);
+  }
+});
 
 usersRouter.post('/', async (req, res, next) => {
   // "abortEarly" is set to false to continue validating after the first error
