@@ -1,4 +1,7 @@
 const usersRouter = require('express').Router();
+const {
+  schemaValidator: validateSchema,
+} = require('../middleware/schemaValidator');
 const { userSchema } = require('../validators/userValidator');
 const {
   getAllUsers,
@@ -15,17 +18,7 @@ usersRouter.get('/', async (req, res, next) => {
   }
 });
 
-usersRouter.post('/', async (req, res, next) => {
-  // "abortEarly" is set to false to continue validating after the first error
-  // and return all the errors found
-  const { error } = userSchema.validate(req.body, {
-    abortEarly: false,
-  });
-
-  if (error) {
-    return next(error); // sends Joi validation errors to the errorHandler middleware
-  }
-
+usersRouter.post('/', validateSchema(userSchema), async (req, res, next) => {
   try {
     const user = await createUser(req.body);
     return res.status(201).send({ message: 'New user has been created', user });
@@ -34,17 +27,8 @@ usersRouter.post('/', async (req, res, next) => {
   }
 });
 
-usersRouter.put('/:id', async (req, res, next) => {
+usersRouter.put('/:id', validateSchema(userSchema), async (req, res, next) => {
   const { id } = req.params;
-
-  // Validate the user object to ensure that all required fields are present
-  const { error } = userSchema.validate(req.body, {
-    abortEarly: false,
-  });
-
-  if (error) {
-    return next(error);
-  }
 
   try {
     const user = await updateUser(id, req.body);
