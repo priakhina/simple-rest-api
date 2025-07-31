@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
+const errorHandler = require('./middleware/errorHandler');
 
 const usersRouter = require('./controllers/users');
 
@@ -11,5 +12,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/users', usersRouter);
+
+app.use(errorHandler);
 
 module.exports = app;

@@ -2,12 +2,16 @@ const usersRouter = require('express').Router();
 const db = require('../utils/config');
 const { userSchema } = require('../validators/userValidator');
 
-usersRouter.post('/', async (req, res) => {
+usersRouter.post('/', async (req, res, next) => {
   try {
-    const { error, value } = userSchema.validate(req.body);
+    // "abortEarly" is set to false to continue validating after the first error
+    // and return all the errors found
+    const { error, value } = userSchema.validate(req.body, {
+      abortEarly: false,
+    });
 
     if (error) {
-      return res.status(400).send({ error: error.details[0].message });
+      return next(error); // sends the error to the errorHandler middleware
     }
 
     const usersRef = db.ref('users');
