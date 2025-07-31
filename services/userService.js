@@ -42,4 +42,18 @@ const updateUser = async (userId, updateData) => {
   return updatedUser;
 };
 
-module.exports = { getAllUsers, createUser, updateUser };
+const deleteUser = async (userId) => {
+  const userRef = db.ref(`users/${userId}`);
+
+  // Check if a user with the given id exists
+  const snapshot = await userRef.once('value');
+  if (!snapshot.exists()) {
+    const error = new Error(`User with id ${userId} has not been found`);
+    error.status = 404;
+    throw error;
+  }
+
+  await userRef.remove();
+};
+
+module.exports = { getAllUsers, createUser, updateUser, deleteUser };

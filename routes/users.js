@@ -7,6 +7,7 @@ const {
   getAllUsers,
   createUser,
   updateUser,
+  deleteUser,
 } = require('../services/userService');
 
 usersRouter.get('/', async (req, res, next) => {
@@ -33,6 +34,17 @@ usersRouter.put('/:id', validateSchema(userSchema), async (req, res, next) => {
   try {
     const user = await updateUser(id, req.body);
     return res.status(200).send({ message: 'The user has been updated', user });
+  } catch (error) {
+    return next(error);
+  }
+});
+
+usersRouter.delete('/:id', async (req, res, next) => {
+  const { id } = req.params;
+
+  try {
+    await deleteUser(id);
+    return res.status(200).send({ message: 'The user has been deleted' });
   } catch (error) {
     return next(error);
   }
