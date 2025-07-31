@@ -18,4 +18,24 @@ const createUser = async (userData) => {
   return newUser;
 };
 
-module.exports = { createUser, getAllUsers };
+const updateUser = async (userId, updateData) => {
+  const userRef = db.ref(`users/${userId}`);
+
+  // Check if a user with the given id exists
+  const snapshot = await userRef.once('value');
+  if (!snapshot.exists()) {
+    const error = new Error(`User with id ${userId} has not been found`);
+    error.status = 404;
+    throw error;
+  }
+
+  // Create a new user object and ensure that id remains consistent
+  const updatedUser = { id: userId, ...updateData };
+
+  // Overwite the entire user data
+  await userRef.set(updatedUser);
+
+  return updatedUser;
+};
+
+module.exports = { getAllUsers, createUser, updateUser };

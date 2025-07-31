@@ -1,13 +1,18 @@
 const errorHandler = (error, req, res, next) => {
+  // Joi validation errors
   if (error.name === 'ValidationError') {
-    const errors = error.details.map((err) => err.message);
+    const messages = error.details.map((err) => err.message);
 
     return res.status(400).send({
-      error: errors.length > 1 ? errors : errors[0],
+      error: messages.length > 1 ? messages : messages[0],
     });
   }
 
-  next(error);
+  // Custom errors
+  const status = error.status || 500;
+  const message = error.message || 'Internal Server Error';
+
+  return res.status(status).send({ error: message });
 };
 
 module.exports = errorHandler;

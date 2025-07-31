@@ -1,6 +1,10 @@
 const usersRouter = require('express').Router();
 const { userSchema } = require('../validators/userValidator');
-const { createUser, getAllUsers } = require('../services/userService');
+const {
+  getAllUsers,
+  createUser,
+  updateUser,
+} = require('../services/userService');
 
 usersRouter.get('/', async (req, res, next) => {
   try {
@@ -25,6 +29,26 @@ usersRouter.post('/', async (req, res, next) => {
   try {
     const user = await createUser(req.body);
     return res.status(201).send({ message: 'New user has been created', user });
+  } catch (error) {
+    return next(error);
+  }
+});
+
+usersRouter.put('/:id', async (req, res, next) => {
+  const { id } = req.params;
+
+  // Validate the user object to ensure that all required fields are present
+  const { error } = userSchema.validate(req.body, {
+    abortEarly: false,
+  });
+
+  if (error) {
+    return next(error);
+  }
+
+  try {
+    const user = await updateUser(id, req.body);
+    return res.status(200).send({ message: 'The user has been updated', user });
   } catch (error) {
     return next(error);
   }
