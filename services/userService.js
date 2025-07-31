@@ -13,6 +13,20 @@ const getAllUsers = async () => {
 
 const createUser = async (userData) => {
   const usersRef = db.ref('users');
+  const { email } = userData;
+
+  // Check if a user with this email already exists
+  const emailSnapshot = await usersRef
+    .orderByChild('email')
+    .equalTo(email)
+    .once('value');
+
+  if (emailSnapshot.exists()) {
+    const error = new Error(`A user with email ${email} already exists`);
+    error.status = 409;
+    throw error;
+  }
+
   const newUserRef = usersRef.push();
   const id = newUserRef.key;
 
@@ -25,7 +39,7 @@ const createUser = async (userData) => {
 const updateUser = async (userId, updateData) => {
   const userRef = db.ref(`users/${userId}`);
 
-  // Check if a user with the given id exists
+  // Check if a user with this id exists
   const snapshot = await userRef.once('value');
   if (!snapshot.exists()) {
     const error = new Error(`User with id ${userId} has not been found`);
