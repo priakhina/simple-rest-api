@@ -8,6 +8,12 @@ const errorHandler = (error, req, res, next) => {
     });
   }
 
+  if (error.name === 'ConflictError') {
+    return res.status(400).send({
+      error: error.details.length > 1 ? error.details : error.details[0],
+    });
+  }
+
   // Custom errors
   const status = error.status || 500;
   const message = error.message || 'Internal Server Error';

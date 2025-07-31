@@ -13,7 +13,13 @@ const getAllUsers = async () => {
 
 const createUser = async (userData) => {
   const usersRef = db.ref('users');
-  const { email } = userData;
+  const { username, email } = userData;
+
+  // Check if a user with this username already exists
+  const usernameSnapshot = await usersRef
+    .orderByChild('username')
+    .equalTo(username)
+    .once('value');
 
   // Check if a user with this email already exists
   const emailSnapshot = await usersRef
@@ -21,9 +27,20 @@ const createUser = async (userData) => {
     .equalTo(email)
     .once('value');
 
+  const errors = [];
+  if (usernameSnapshot.exists()) {
+    errors.push(`A user with username ${username} already exists`);
+  }
+
   if (emailSnapshot.exists()) {
-    const error = new Error(`A user with email ${email} already exists`);
+    errors.push(`A user with email ${email} already exists`);
+  }
+
+  if (errors.length > 0) {
+    const error = new Error();
+    error.name = 'ConflictError';
     error.status = 409;
+    error.details = errors;
     throw error;
   }
 
