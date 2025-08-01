@@ -1,4 +1,5 @@
 const db = require('../utils/config');
+const ConflictError = require('../errors/ConflictError');
 
 const getAllUsers = async () => {
   const snapshot = await db.ref('users').once('value');
@@ -27,21 +28,17 @@ const createUser = async (userData) => {
     .equalTo(email)
     .once('value');
 
-  const errors = [];
+  const errorMessages = [];
   if (usernameSnapshot.exists()) {
-    errors.push(`A user with username ${username} already exists`);
+    errorMessages.push(`A user with username ${username} already exists`);
   }
 
   if (emailSnapshot.exists()) {
-    errors.push(`A user with email ${email} already exists`);
+    errorMessages.push(`A user with email ${email} already exists`);
   }
 
-  if (errors.length > 0) {
-    const error = new Error();
-    error.name = 'ConflictError';
-    error.status = 409;
-    error.details = errors;
-    throw error;
+  if (errorMessages.length > 0) {
+    throw new ConflictError(errorMessages);
   }
 
   const newUserRef = usersRef.push();

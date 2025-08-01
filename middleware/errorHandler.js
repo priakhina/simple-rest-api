@@ -1,3 +1,5 @@
+const ConflictError = require('../errors/ConflictError');
+
 const errorHandler = (error, req, res, next) => {
   // Joi validation errors
   if (error.name === 'ValidationError') {
@@ -8,8 +10,8 @@ const errorHandler = (error, req, res, next) => {
     });
   }
 
-  if (error.name === 'ConflictError') {
-    return res.status(400).send({
+  if (error instanceof ConflictError) {
+    return res.status(error.status).send({
       error: error.details.length > 1 ? error.details : error.details[0],
     });
   }
