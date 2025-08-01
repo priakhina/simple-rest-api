@@ -5,6 +5,7 @@ const errorHandler = require('./middleware/errorHandler');
 
 const usersRouter = require('./routes/users');
 const incomeRouter = require('./routes/income');
+const expensesRouter = require('./routes/expenses');
 
 app.use(bodyParser.json());
 
@@ -14,6 +15,7 @@ app.get('/', (req, res) => {
 
 app.use('/users', usersRouter);
 app.use('/income', incomeRouter);
+app.use('/expenses', expensesRouter);
 
 app.use(errorHandler);
 
