@@ -1,7 +1,10 @@
 const db = require('../utils/config');
+const { getVerifiedRefById } = require('./commonService');
+
+const EXPENSES_REF = db.ref('expenses');
 
 const getAllExpenses = async () => {
-  const snapshot = await db.ref('expenses').once('value');
+  const snapshot = await EXPENSES_REF.once('value');
   const expenses = snapshot.val();
 
   // Firebase returns null or undefined when there is no data; return an empty array instead
@@ -12,8 +15,7 @@ const getAllExpenses = async () => {
 };
 
 const createExpense = async (expenseData) => {
-  const expensesRef = db.ref('expenses');
-  const newExpenseRef = expensesRef.push();
+  const newExpenseRef = EXPENSES_REF.push();
   const id = newExpenseRef.key;
 
   const newExpense = { id, ...expenseData };
@@ -23,35 +25,19 @@ const createExpense = async (expenseData) => {
 };
 
 const updateExpense = async (expenseId, updateData) => {
-  const expenseRef = db.ref(`expenses/${expenseId}`);
-
-  // Check if an expense with this id exists
-  const snapshot = await expenseRef.once('value');
-  if (!snapshot.exists()) {
-    const error = new Error(`Expense with id ${expenseId} has not been found`);
-    error.status = 404;
-    throw error;
-  }
+  const expenseRef = await getVerifiedRefById('expenses', expenseId);
 
   // Create a new expense object and ensure that id remains consistent
   const updatedExpense = { id: expenseId, ...updateData };
 
-  // Overwite the entire user data
+  // Overwrite the entire expense data
   await expenseRef.set(updatedExpense);
 
   return updatedExpense;
 };
 
 const deleteExpense = async (expenseId) => {
-  const expenseRef = db.ref(`expenses/${expenseId}`);
-
-  // Check if an expense with the given id exists
-  const snapshot = await expenseRef.once('value');
-  if (!snapshot.exists()) {
-    const error = new Error(`Expense with id ${expenseId} has not been found`);
-    error.status = 404;
-    throw error;
-  }
+  const expenseRef = await getVerifiedRefById('expenses', expenseId);
 
   await expenseRef.remove();
 };

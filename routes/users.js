@@ -33,7 +33,7 @@ usersRouter.put('/:id', validateSchema(userSchema), async (req, res, next) => {
 
   try {
     const user = await updateUser(id, req.body);
-    return res.status(200).send({ message: 'The user has been updated', user });
+    return res.status(200).send({ message: 'User has been updated', user });
   } catch (error) {
     return next(error);
   }
@@ -44,7 +44,7 @@ usersRouter.delete('/:id', async (req, res, next) => {
 
   try {
     await deleteUser(id);
-    return res.status(200).send({ message: 'The user has been deleted' });
+    return res.status(200).send({ message: 'User has been deleted' });
   } catch (error) {
     return next(error);
   }

@@ -1,7 +1,10 @@
 const db = require('../utils/config');
+const { getVerifiedRefById } = require('./commonService');
+
+const INCOME_REF = db.ref('income');
 
 const getAllIncome = async () => {
-  const snapshot = await db.ref('income').once('value');
+  const snapshot = await INCOME_REF.once('value');
   const income = snapshot.val();
 
   // Firebase returns null or undefined when there is no data; return an empty array instead
@@ -12,8 +15,7 @@ const getAllIncome = async () => {
 };
 
 const createIncome = async (incomeData) => {
-  const incomeRef = db.ref('income');
-  const newIncomeRef = incomeRef.push();
+  const newIncomeRef = INCOME_REF.push();
   const id = newIncomeRef.key;
 
   const newIncome = { id, ...incomeData };
@@ -23,35 +25,19 @@ const createIncome = async (incomeData) => {
 };
 
 const updateIncome = async (incomeId, updateData) => {
-  const incomeRef = db.ref(`income/${incomeId}`);
-
-  // Check if income with this id exists
-  const snapshot = await incomeRef.once('value');
-  if (!snapshot.exists()) {
-    const error = new Error(`Income with id ${userId} has not been found`);
-    error.status = 404;
-    throw error;
-  }
+  const incomeRef = await getVerifiedRefById('income', incomeId);
 
   // Create a new income object and ensure that id remains consistent
   const updatedIncome = { id: incomeId, ...updateData };
 
-  // Overwite the entire user data
+  // Overwrite the entire income data
   await incomeRef.set(updatedIncome);
 
   return updatedIncome;
 };
 
 const deleteIncome = async (incomeId) => {
-  const incomeRef = db.ref(`income/${incomeId}`);
-
-  // Check if income with the given id exists
-  const snapshot = await incomeRef.once('value');
-  if (!snapshot.exists()) {
-    const error = new Error(`Income with id ${incomeId} has not been found`);
-    error.status = 404;
-    throw error;
-  }
+  const incomeRef = await getVerifiedRefById('income', incomeId);
 
   await incomeRef.remove();
 };
