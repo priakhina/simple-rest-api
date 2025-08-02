@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Simple REST API Documentation</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <section>
+        <h1>REST API Documentation</h1>
+        <p>Welcome to the Simple REST API!</p>
+        <p>
+          This API allows you to manage users, income, and expenses using
+          standard HTTP methods.
+        </p>
+        <p>All data is stored in a Firebase Realtime Database.</p>
+      </section>
+      <section>
+        <h2>General Endpoint</h2>
+        <div class="endpoint">
+          <div class="description">
+            <span class="emoji">📥</span><span class="badge">GET /</span>
+            <div class="text">
+              <p>
+                Retrieves an overview of the REST API and available endpoints
+                (returns this documentation in HTML format)
+              </p>
+              <p>
+                Returns a <span class="badge success">200 OK</span> status code
+                when successful
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section>
+        <h2>Users Endpoints</h2>
+        <div class="endpoint">
+          <div class="description">
+            <span class="emoji">📥</span><span class="badge">GET /users</span>
+            <div class="text">
+              <p>Retrieves a list of all users</p>
+              <p>
+                Returns a <span class="badge success">200 OK</span> status code
+                when successful
+              </p>
+            </div>
+          </div>
+          <h3>Example Response:</h3>
+          <pre><code>
+            [
+                {
+                    "address": {
+                        "city": "Toronto",
+                        "country": "Canada",
+                        "street": "123 Main St",
+                        "suite": "Apt 4",
+                        "zipCode": "M5V 2T6"
+                    },
+                    "email": "john@example.com",
+                    "id": "-OWajfMNuJBa3BGD1FSV",
+                    "name": "John Doe",
+                    "username": "johndoe"
+                }
+            ]
+          </code></pre>
+        </div>
+        <div class="endpoint">
+          <div class="description">
+            <span class="emoji">📤</span><span class="badge">POST /users</span>
+            <div class="text">
+              <p>Creates a new user</p>
+              <p>All fields shown in the example request below are required</p>
+              <p>
+                Returns a <span class="badge success">201 Created</span> status
+                code when successful
+              </p>
+            </div>
+          </div>
+          <h3>Example Request Body:</h3>
+          <pre><code>
+            {
+                "name": "John Doe",
+                "username": "johndoe",
+                "email": "john@example.com",
+                "address": {
+                    "street": "123 Main St",
+                    "suite": "Apt 4",
+                    "city": "Toronto",
+                    "country": "Canada",
+                    "zipCode": "M5V 2T6"
+                }
+            }
+          </code></pre>
+          <h3>Example Response:</h3>
+          <pre><code>
+            {
+                "message": "New user has been created",
+                "user": {
+                    "id": "-OWajfMNuJBa3BGD1FSV",
+                    "name": "John Doe",
+                    "username": "johndoe",
+                    "email": "john@example.com",
+                    "address": {
+                        "street": "123 Main St",
+                        "suite": "Apt 4",
+                        "city": "Toronto",
+                        "country": "Canada",
+                        "zipCode": "M5V 2T6"
+                    }
+                }
+            }
+          </code></pre>
+        </div>
+        <div class="endpoint">
+          <div class="description">
+            <span class="emoji">🛠️</span
+            ><span class="badge">PUT /users/:id</span>
+            <div class="text">
+              <p>Updates an existing user by ID</p>
+              <p>
+                Replaces the entire user object with the one provided. All
+                fields must be included.
+              </p>
+              <p>
+                Returns a <span class="badge success">200 OK</span> status code
+                when successful
+              </p>
+            </div>
+          </div>
+          <h3>Example Request Body:</h3>
+          <p><em>(Same object structure as in POST /users)</em></p>
+          <pre><code>
+            {
+                "name": "John Doe",
+                "username": "johndoe",
+                "email": "john@example.com",
+                "address": {
+                    "street": "123 Main St",
+                    "suite": "Apt 4",
+                    "city": "Toronto",
+                    "country": "Canada",
+                    "zipCode": "M5V 2T6"
+                }
+            }
+          </code></pre>
+          <h3>Example Response:</h3>
+          <pre><code>
+            {
+                "message": "User has been updated",
+                "user": {
+                    "id": "-OWajfMNuJBa3BGD1FSV",
+                    "name": "John Doe",
+                    "username": "johndoe",
+                    "email": "john@example.com",
+                    "address": {
+                        "street": "123 Main St",
+                        "suite": "Apt 4",
+                        "city": "Toronto",
+                        "country": "Canada",
+                        "zipCode": "M5V 2T6"
+                    }
+                }
+            }
+          </code></pre>
+        </div>
+        <div class="endpoint">
+          <div class="description">
+            <span class="emoji">❌</span
+            ><span class="badge">DELETE /users/:id</span>
+            <div class="text">
+              <p>Deletes an existing user by ID</p>
+              <p>
+                Returns a <span class="badge success">200 OK</span> status code
+                when successful
+              </p>
+            </div>
+          </div>
+          <h3>Example Response:</h3>
+          <pre><code>
+            {
+                "message": "User has been deleted"
+            }
+          </code></pre>
+        </div>
+      </section>
+      <section>
+        <h2>Income Endpoints</h2>
+        <div class="endpoint">
+          <div class="description">
+            <span class="emoji">📥</span><span class="badge">GET /income</span>
+            <div class="text">
+              <p>Retrieves a list of all income entries</p>
+              <p>
+                Returns a <span class="badge success">200 OK</span> status code
+                when successful
+              </p>
+            </div>
+          </div>
+          <h3>Example Response:</h3>
+          <pre><code>
+            [
+                {
+                    "id": "-OWbSAM_osrwmQyqiFpi",
+                    "interest": 120,
+                    "other": 100,
+                    "secondaryIncome": 700,
+                    "supportPayment": 40,
+                    "wages": 1400
+                }
+            ]
+          </code></pre>
+        </div>
+        <div class="endpoint">
+          <div class="description">
+            <span class="emoji">📤</span><span class="badge">POST /income</span>
+            <div class="text">
+              <p>Creates a new income entry</p>
+              <p>All fields shown in the example request below are required</p>
+              <p>
+                Returns a <span class="badge success">201 Created</span> status
+                code when successful
+              </p>
+            </div>
+          </div>
+          <h3>Example Request Body:</h3>
+          <pre><code>
+            {
+                "wages": 1400,
+                "secondaryIncome": 700,
+                "interest": 120,
+                "supportPayment": 40,
+                "other": 100
+            }
+          </code></pre>
+          <h3>Example Response:</h3>
+          <pre><code>
+            {
+                "message": "New income has been created",
+                "income": {
+                    "id": "-OWbSAM_osrwmQyqiFpi",
+                    "wages": 1400,
+                    "secondaryIncome": 700,
+                    "interest": 120,
+                    "supportPayment": 40,
+                    "other": 100
+                }
+            }
+          </code></pre>
+        </div>
+        <div class="endpoint">
+          <div class="description">
+            <span class="emoji">🛠️</span
+            ><span class="badge">PUT /income/:id</span>
+            <div class="text">
+              <p>Updates an existing income entry by ID</p>
+              <p>
+                Replaces the entire income object with the one provided. All
+                fields must be included.
+              </p>
+              <p>
+                Returns a <span class="badge success">200 OK</span> status code
+                when successful
+              </p>
+            </div>
+          </div>
+          <h3>Example Request Body:</h3>
+          <p><em>(Same object structure as in POST /income)</em></p>
+          <pre><code>
+            {
+                "wages": 1400,
+                "secondaryIncome": 700,
+                "interest": 120,
+                "supportPayment": 40,
+                "other": 100
+            }
+          </code></pre>
+          <h3>Example Response:</h3>
+          <pre><code>
+            {
+                "message": "Income has been updated",
+                "income": {
+                    "id": "-OWbSAM_osrwmQyqiFpi",
+                    "wages": 1400,
+                    "secondaryIncome": 700,
+                    "interest": 120,
+                    "supportPayment": 40,
+                    "other": 100
+                }
+            }
+          </code></pre>
+        </div>
+        <div class="endpoint">
+          <div class="description">
+            <span class="emoji">❌</span
+            ><span class="badge">DELETE /income/:id</span>
+            <div class="text">
+              <p>Deletes an existing income entry by ID</p>
+              <p>
+                Returns a <span class="badge success">200 OK</span> status code
+                when successful
+              </p>
+            </div>
+          </div>
+          <h3>Example Response:</h3>
+          <pre><code>
+            {
+                "message": "Income has been deleted"
+            }
+          </code></pre>
+        </div>
+      </section>
+
+      <section>
+        <h2>Expenses Endpoints</h2>
+        <div class="endpoint">
+          <div class="description">
+            <span class="emoji">📥</span
+            ><span class="badge">GET /expenses</span>
+            <div class="text">
+              <p>Retrieves a list of all expenses</p>
+              <p>
+                Returns a <span class="badge success">200 OK</span> status code
+                when successful
+              </p>
+            </div>
+          </div>
+          <h3>Example Response:</h3>
+          <pre><code>
+            [
+                {
+                    "housing": {
+                        "maintenance": 100,
+                        "rent": 600,
+                        "rentInsurance": 400,
+                        "storageAndParking": 500,
+                        "utilities": 200
+                    },
+                    "id": "-OWcFVIgHwB6Dua6G6N8",
+                    "insurance": {
+                        "healthInsurance": 600,
+                        "lifeInsurance": 400,
+                        "other": 300
+                    },
+                    "paymentObligations": {
+                        "creditCard": 500,
+                        "lineOfCredit": 1000,
+                        "loan": 6000,
+                        "vehicleLease": 200
+                    },
+                    "personal": {
+                        "clothing": 60,
+                        "diningOut": 300,
+                        "familyGifts": 40,
+                        "hobbies": 200,
+                        "other": 60,
+                        "personalGrooming": 100,
+                        "transportation": 50
+                    },
+                    "savings": {
+                        "RRSP": 1000,
+                        "bonds": 200,
+                        "investmentSavings": 4000,
+                        "longtermSavings": 5000,
+                        "other": 500
+                    },
+                    "utilities": {
+                        "cable": 200,
+                        "electricity": 400,
+                        "heat": 100,
+                        "internet": 300,
+                        "other": 150,
+                        "phone": 600,
+                        "water": 400
+                    }
+                }
+            ]
+          </code></pre>
+        </div>
+        <div class="endpoint">
+          <div class="description">
+            <span class="emoji">📤</span
+            ><span class="badge">POST /expenses</span>
+            <div class="text">
+              <p>Creates a new expense</p>
+              <p>All fields shown in the example request below are required</p>
+              <p>
+                Returns a <span class="badge success">201 Created</span> status
+                code when successful
+              </p>
+            </div>
+          </div>
+          <h3>Example Request Body:</h3>
+          <pre><code>
+            {
+                "savings": {
+                    "RRSP": 1000,
+                    "investmentSavings": 4000,
+                    "longtermSavings": 5000,
+                    "bonds": 200,
+                    "other": 500
+                },
+                "paymentObligations": {
+                    "creditCard": 500,
+                    "loan": 6000,
+                    "vehicleLease": 200,
+                    "lineOfCredit": 1000
+                },
+                "insurance": {
+                    "lifeInsurance": 400,
+                    "healthInsurance": 600,
+                    "other": 300
+                },
+                "housing": {
+                    "rent": 600,
+                    "rentInsurance": 400,
+                    "storageAndParking": 500,
+                    "utilities": 200,
+                    "maintenance": 100
+                },
+                "utilities": {
+                    "phone": 600,
+                    "internet": 300,
+                    "water": 400,
+                    "heat": 100,
+                    "electricity": 400,
+                    "cable": 200,
+                    "other": 150
+                },
+                "personal": {
+                    "transportation": 50,
+                    "clothing": 60,
+                    "familyGifts": 40,
+                    "personalGrooming": 100,
+                    "diningOut": 300,
+                    "hobbies": 200,
+                    "other": 60
+                }
+            }
+          </code></pre>
+          <h3>Example Response:</h3>
+          <pre><code>
+            {
+                "message": "New expense has been created",
+                "expense": {
+                    "id": "-OWcFVIgHwB6Dua6G6N8",
+                    "savings": {
+                        "RRSP": 1000,
+                        "investmentSavings": 4000,
+                        "longtermSavings": 5000,
+                        "bonds": 200,
+                        "other": 500
+                    },
+                    "paymentObligations": {
+                        "creditCard": 500,
+                        "loan": 6000,
+                        "vehicleLease": 200,
+                        "lineOfCredit": 1000
+                    },
+                    "insurance": {
+                        "lifeInsurance": 400,
+                        "healthInsurance": 600,
+                        "other": 300
+                    },
+                    "housing": {
+                        "rent": 600,
+                        "rentInsurance": 400,
+                        "storageAndParking": 500,
+                        "utilities": 200,
+                        "maintenance": 100
+                    },
+                    "utilities": {
+                        "phone": 600,
+                        "internet": 300,
+                        "water": 400,
+                        "heat": 100,
+                        "electricity": 400,
+                        "cable": 200,
+                        "other": 150
+                    },
+                    "personal": {
+                        "transportation": 50,
+                        "clothing": 60,
+                        "familyGifts": 40,
+                        "personalGrooming": 100,
+                        "diningOut": 300,
+                        "hobbies": 200,
+                        "other": 60
+                    }
+                }
+            }
+          </code></pre>
+        </div>
+        <div class="endpoint">
+          <div class="description">
+            <span class="emoji">🛠️</span
+            ><span class="badge">PUT /expenses/:id</span>
+            <div class="text">
+              <p>Updates an existing expense by ID</p>
+              <p>
+                Replaces the entire expense object with the one provided. All
+                fields must be included.
+              </p>
+              <p>
+                Returns a <span class="badge success">200 OK</span> status code
+                when successful
+              </p>
+            </div>
+          </div>
+          <h3>Example Request Body:</h3>
+          <p><em>(Same object structure as in POST /expenses)</em></p>
+          <pre><code>
+            {
+                "savings": {
+                    "RRSP": 1000,
+                    "investmentSavings": 4000,
+                    "longtermSavings": 5000,
+                    "bonds": 200,
+                    "other": 500
+                },
+                "paymentObligations": {
+                    "creditCard": 500,
+                    "loan": 6000,
+                    "vehicleLease": 200,
+                    "lineOfCredit": 1000
+                },
+                "insurance": {
+                    "lifeInsurance": 400,
+                    "healthInsurance": 600,
+                    "other": 300
+                },
+                "housing": {
+                    "rent": 600,
+                    "rentInsurance": 400,
+                    "storageAndParking": 500,
+                    "utilities": 200,
+                    "maintenance": 100
+                },
+                "utilities": {
+                    "phone": 600,
+                    "internet": 300,
+                    "water": 400,
+                    "heat": 100,
+                    "electricity": 400,
+                    "cable": 200,
+                    "other": 150
+                },
+                "personal": {
+                    "transportation": 50,
+                    "clothing": 60,
+                    "familyGifts": 40,
+                    "personalGrooming": 100,
+                    "diningOut": 300,
+                    "hobbies": 200,
+                    "other": 60
+                }
+            }
+          </code></pre>
+          <h3>Example Response:</h3>
+          <pre><code>
+            {
+                "message": "Expense has been updated",
+                "expense": {
+                    "id": "-OWcFVIgHwB6Dua6G6N8",
+                    "savings": {
+                        "RRSP": 1000,
+                        "investmentSavings": 4000,
+                        "longtermSavings": 5000,
+                        "bonds": 200,
+                        "other": 500
+                    },
+                    "paymentObligations": {
+                        "creditCard": 500,
+                        "loan": 6000,
+                        "vehicleLease": 200,
+                        "lineOfCredit": 1000
+                    },
+                    "insurance": {
+                        "lifeInsurance": 400,
+                        "healthInsurance": 600,
+                        "other": 300
+                    },
+                    "housing": {
+                        "rent": 600,
+                        "rentInsurance": 400,
+                        "storageAndParking": 500,
+                        "utilities": 200,
+                        "maintenance": 100
+                    },
+                    "utilities": {
+                        "phone": 600,
+                        "internet": 300,
+                        "water": 400,
+                        "heat": 100,
+                        "electricity": 400,
+                        "cable": 200,
+                        "other": 150
+                    },
+                    "personal": {
+                        "transportation": 50,
+                        "clothing": 60,
+                        "familyGifts": 40,
+                        "personalGrooming": 100,
+                        "diningOut": 300,
+                        "hobbies": 200,
+                        "other": 60
+                    }
+                }
+            }
+          </code></pre>
+        </div>
+        <div class="endpoint">
+          <div class="description">
+            <span class="emoji">❌</span
+            ><span class="badge">DELETE /expenses/:id</span>
+            <div class="text">
+              <p>Deletes an existing expense by ID</p>
+              <p>
+                Returns a <span class="badge success">200 OK</span> status code
+                when successful
+              </p>
+            </div>
+          </div>
+          <h3>Example Response:</h3>
+          <pre><code>
+            {
+                "message": "Expense has been deleted"
+            }
+          </code></pre>
+        </div>
+      </section>
+      <section>
+        <h2>⚠️ Error Examples</h2>
+        <div class="error">
+          <div class="description">
+            <span class="badge error">400 Bad Request</span>
+            <div class="text">
+              <p>
+                Validation error (missing required fields or incorrect data
+                type)
+              </p>
+            </div>
+          </div>
+          <h3>Example response:</h3>
+          <p>
+            <em>When a POST or PUT request is sent and the request body...</em>
+          </p>
+          <p>
+            <em>misses one required field:</em>
+          </p>
+          <pre><code>
+            {
+                "error": "\"address\" is required"
+            }
+          </code></pre>
+          <p>
+            <em>misses multiple required fields:</em>
+          </p>
+          <pre><code>
+            {
+            "error": [
+                "\"username\" is required",
+                "\"email\" is required"
+            ]
+        }
+          </code></pre>
+        </div>
+        <div class="error">
+          <div class="description">
+            <span class="badge error">404 Not Found</span>
+            <div class="text">
+              <p>Resource doesn't exist</p>
+            </div>
+          </div>
+          <h3>Example Response:</h3>
+          <p>
+            <em
+              >When a GET request is sent and the resource with the provided ID
+              doesn't exist:</em
+            >
+          </p>
+          <pre><code>
+            {
+                "error": "User with id -OWajfMNuJBa3BGD1FSV has not been found"
+            }
+          </code></pre>
+          <p>
+            <em
+              >When a GET request is sent to the endpoint that is not
+              recognized/supported by the server (e.g.,
+              http://localhost:3001/blahblah):</em
+            >
+          </p>
+          <pre><code>
+            {
+                "error": "Unknown endpoint"
+            }
+          </code></pre>
+        </div>
+        <div class="error">
+          <div class="description">
+            <span class="badge error">409 Conflict</span>
+            <div class="text">
+              <p>
+                Duplicate resource (email and/or username); applicable for users
+                only
+              </p>
+            </div>
+          </div>
+          <h3>Example Response:</h3>
+          <p>
+            <em
+              >When a POST request is sent to the /users endpoint and a resource
+              with the given username and email already exists:</em
+            >
+          </p>
+          <pre><code>
+            {
+                "error": [
+                    "A user with username johndoe already exists",
+                    "A user with email john@example.com already exists"
+                ]
+            }
+          </code></pre>
+        </div>
+      </section>
+    </div>
+  </body>
+</html>
