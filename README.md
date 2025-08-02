@@ -1,6 +1,6 @@
 # Simple REST API
 
-This is a Node.js RESTful API built with Express and Firebase Realtime Database. It allows users to manage users, income, and expenses. The API supports CRUD operations and serves a static HTML page with API documentation at the root (/).
+This is a Node.js RESTful API built with Express and Firebase Realtime Database. It allows users to manage users, income, and expenses. The API supports CRUD operations and serves a static HTML page with API documentation at the root (`/`).
 
 ## Table of contents
 
@@ -110,7 +110,9 @@ Refer to the documentation page for information about endpoints, sample requests
 | PORT | (Optional) Port number for the server |
 
 > [!NOTE]  
-> You can find these values by generating a [Firebase Admin SDK private key](https://console.firebase.google.com/ > Project Settings > Service Accounts).
+> You can obtain these credentials by generating a Firebase Admin SDK private key in the [Firebase Console](https://console.firebase.google.com/):
+> 
+> ⚙️ Project Settings → Service Accounts → Generate Private Key
 
 ## Dependencies
 
@@ -121,4 +123,7 @@ All dependencies are listed in `package.json`. Major ones include:
 - [joi](https://www.npmjs.com/package/joi) - Data validation for JavaScript
 - [dotenv](https://www.npmjs.com/package/dotenv) - Loads environment variables from a `.env` file into `process.env`
 
-
+Install all dependencies:
+```
+npm install
+```
