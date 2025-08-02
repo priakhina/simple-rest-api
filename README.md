@@ -5,7 +5,7 @@ This is a Node.js RESTful API built with Express and Firebase Realtime Database.
 ## Table of contents
 
 - [Project Overview](#project-overview)
-  - [Live Site URL](#live-site-url)
+  - [Live URL](#live-url)
 - [Installation Instructions](#installation-instructions)
 - [API Usage](#api-usage)
 - [Environment Variables](#environment-variables)
@@ -20,8 +20,8 @@ This project provides three main resource endpoints:
 
 All resources are validated using [Joi](https://joi.dev/) schemas to ensure data consistency.
 
-### Live Site URL
-The REST API can be accessed online at [https://simple-rest-api-a7ge.onrender.com](https://simple-rest-api-a7ge.onrender.com).
+### Live URL
+The API is deployed on Render: [https://simple-rest-api-a7ge.onrender.com](https://simple-rest-api-a7ge.onrender.com).
 
 ## Installation Instructions
 
@@ -69,7 +69,35 @@ Once running, you can:
 - Access the API documentation by visiting:
   `http://localhost:3001/` if running locally or [https://simple-rest-api-a7ge.onrender.com](https://simple-rest-api-a7ge.onrender.com)
 - Use tools like [Postman](https://www.postman.com/) to interact with endpoints.
-  Refer to the documentation page for endpoint descriptions, sample requests, and responses.
+
+The follwing API endpoints are available:
+
+### General
+
+- **`GET /`** - A detailed description of the REST API and available endpoints
+
+### Users
+
+- **`GET /users`** - Retrieve all users.
+- **`POST /users`** - Create a new user.
+- **`PUT /users/:id`** - Update an existing user by ID.
+- **`DELETE /users/:id`** - Delete a user by ID.
+
+### Income
+
+- **`GET /income`** - Retrieve all income entries.
+- **`POST /income`** - Add a new income entry.
+- **`PUT /income/:id`** - Update an existing income entry by ID.
+- **`DELETE /income/:id`** - Delete an income entry by ID.
+
+### Expenses
+
+- **`GET /expenses`** - Retrieve all expenses.
+- **`POST /expenses`** - Add a new expense.
+- **`PUT /expenses/:id`** - Update an existing expense by ID.
+- **`DELETE /expenses/:id`** - Delete an expense by ID.
+
+Refer to the documentation page for information about endpoints, sample requests, and responses.
 
 ## Environment Variables
 
